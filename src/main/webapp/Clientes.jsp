@@ -91,6 +91,7 @@
 	
 ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring_config.xml");
 AdminDao admindao = (AdminDao) applicationContext.getBean("adminDao");
+if(nombre==null){
 try {
 	List<Cliente> admins = admindao.buscarTodos();
 	for (Cliente admin2 : admins) { %>
@@ -106,7 +107,25 @@ try {
 } catch (DataAccessException e) {
 	e.printStackTrace();
 }
+}else{
+	try {
+		List<Cliente> admins = admindao.buscarXNombre(nombre);
+		for (Cliente admin2 : admins) { %>
+	      <tr>
+	        <td><%= admin2.getNom_cli() %></td>
+	        <td><%= admin2.getTel_cli() %></td>
+	        <td><%= admin2.getDeuda_cli() %></td>
+	      </tr>
+	 <%
+		}
+	} catch (CannotGetJdbcConnectionException ex) {
+		ex.printStackTrace();
+	} catch (DataAccessException e) {
+		e.printStackTrace();
+	}
+}
 ((ClassPathXmlApplicationContext) applicationContext).close();
+
 %>
     </tbody>
   </table>
