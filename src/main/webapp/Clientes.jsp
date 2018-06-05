@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+   
+<%@ page import="org.springframework.context.ApplicationContext" %>
+<%@ page import="org.springframework.context.support.ClassPathXmlApplicationContext" %>
+<%@ page import="newProject.dao.AdminDao" %>
+<%@ page import="newProject.a.Cliente" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.springframework.jdbc.CannotGetJdbcConnectionException" %>
+<%@ page import="org.springframework.dao.DataAccessException" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -7,9 +16,10 @@
    <!-- Bootstrap Styles -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
-<link rel="stylesheet" type="text/css" href="css/style.css">
+<link rel="stylesheet" type="text/css" href="css/styleClientes.css">
 <script src="js/script.js" type="text/javascript"></script>
 <title>Insert title here</title>
+<script src="js/script.js" type="text/javascript"></script>
 </head>
 <body>
  <nav class="navbar navbar-dark navbar-fixed-top bg-dark" id="compania">
@@ -57,31 +67,47 @@
         <div class="container-fluid">
                 <div class="row">  
      <!-- Comienza el main ************************* -->
+     
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-           <table class="table table-striped">
+        <div id="busqueda">
+        <form action="ClientesServletBusqueda" method="post">
+        <label>Buscar por Nombre</label><input type="text" value="nombre" name="nombre">
+        <label>Buscar por Id</label><input type="text" value="id" name="id">
+        <input type="submit" value="Buscar"><br>
+        </form>
+        </div>
+           <table class="table table-striped " id="tabla">
     <thead>
       <tr>
-        <th>Firstname</th>
-        <th>Lastname</th>
-        <th>Email</th>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Deuda</th>
       </tr>
     </thead>
     <tbody>
+    <%
+    String nombre = request.getParameter("nombre");
+	String id = request.getParameter("id");
+	
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring_config.xml");
+AdminDao admindao = (AdminDao) applicationContext.getBean("adminDao");
+try {
+	List<Cliente> admins = admindao.buscarTodos();
+	for (Cliente admin2 : admins) { %>
       <tr>
-        <td>John</td>
-        <td>Doe</td>
-        <td>john@example.com</td>
+        <td><%= admin2.getNom_cli() %></td>
+        <td><%= admin2.getTel_cli() %></td>
+        <td><%= admin2.getDeuda_cli() %></td>
       </tr>
-      <tr>
-        <td>Mary</td>
-        <td>Moe</td>
-        <td>mary@example.com</td>
-      </tr>
-      <tr>
-        <td>July</td>
-        <td>Dooley</td>
-        <td>july@example.com</td>
-      </tr>
+ <%
+	}
+} catch (CannotGetJdbcConnectionException ex) {
+	ex.printStackTrace();
+} catch (DataAccessException e) {
+	e.printStackTrace();
+}
+((ClassPathXmlApplicationContext) applicationContext).close();
+%>
     </tbody>
   </table>
             </main> <!-- termina el main -->
