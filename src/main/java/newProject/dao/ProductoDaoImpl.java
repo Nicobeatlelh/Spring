@@ -17,7 +17,7 @@ import newProject.a.Cliente;
 import newProject.a.Producto;
 
 @Component("prodDao")
-public class ProductoDaoImpl {
+public class ProductoDaoImpl implements InterfazGenerics<Producto>{
 	private NamedParameterJdbcTemplate jdbcTemplate;
 	@Autowired
 	private void setDataSource(DataSource dataSource) {
@@ -32,7 +32,7 @@ public class ProductoDaoImpl {
 	}
 
 
-	public List<Producto> buscarTodos() {
+	public List<Producto> buscarTodosSinJoin() {
 		return jdbcTemplate.query("Select * from Producto", new RowMapper<Producto>() {
 
 			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -44,18 +44,38 @@ public class ProductoDaoImpl {
 			}
 		});
 	}
+	public List<Producto> buscarTodos() {
+		return jdbcTemplate.query("select p.nombre, t.stock,t.precio_c,t.precio_v,t.fua, t.img_tp " + 
+				"from Producto as p " + 
+				"inner join Tipo_prod as t " + 
+				"on t.id_tp=p.id_tp", new RowMapper<Producto>() {
 
-	public Cliente buscarXId(int id) {
+			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Producto prod = new Producto();
+				prod.setNombre(rs.getString("nombre"));
+				prod.setStock(rs.getInt("stock"));
+				prod.setPrecio_c(rs.getInt("precio_c"));
+				prod.setPrecio_v(rs.getInt("precio_v"));
+				prod.setFua(rs.getDate("fua"));
+				prod.setImg_tp(rs.getString("img_tp"));
+				return prod;
+			}
+		});
+	}
+
+	public Producto buscarXId(int id) {
 		//return jdbcTemplate.query("Select * from prod where idad = :idAd", new MapSqlParameterSource("idAd",id),new prodRowMapper());
-		return jdbcTemplate.queryForObject("Select * from Clientes where id_cli = :id_cli", new MapSqlParameterSource("id_cli",id),new ClienteRowMapper());
+		//return jdbcTemplate.queryForObject("Select * from Clientes where id_cli = :id_cli", new MapSqlParameterSource("id_cli",id),new ClienteRowMapper());
+		return null;
 	}
 
-	public List<Cliente> buscarXNombre(String nombre) {
+	public List<Producto> buscarXNombre(String nombre) {
 		// TODO Auto-generated method stub
-		return jdbcTemplate.query("Select * from Clientes where nom_cli like :nom_cli",new MapSqlParameterSource("nom_cli", "%" + nombre + "%"), new ClienteRowMapper());
+		//return jdbcTemplate.query("Select * from Clientes where nom_cli like :nom_cli",new MapSqlParameterSource("nom_cli", "%" + nombre + "%"), new ClienteRowMapper());
+		return null;
 	}
 
-	public boolean actualizar(Cliente prod) {
+	public boolean actualizar(Producto prod) {
 		// BeanPropertySqlParameterSource, porque los campos de nuestra tabla son identicos al de nuestra clase
 		return jdbcTemplate.update("Update Clientes set nom_cli:nom_cli, tel_cli:tel_cli, deuda_cli:deuda_cli where id_cli=:id_cli ", 
 				new BeanPropertySqlParameterSource(prod)) == 1;
@@ -66,7 +86,7 @@ public class ProductoDaoImpl {
 		return jdbcTemplate.update("delete from Clientes Where id_cli=id_cli", new MapSqlParameterSource("id_cli",idAd)) == 1;
 	}
 
-	public void grabarTodos(List<Cliente> prods) {
+	public void grabarTodos(List<Producto> prods) {
 		// TODO Auto-generated method stub
 		
 	}

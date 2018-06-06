@@ -1,18 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
+<%@ page import="org.springframework.context.ApplicationContext" %>
+<%@ page import="org.springframework.context.support.ClassPathXmlApplicationContext" %>
+<%@ page import="newProject.dao.AdminDao" %>
+<%@ page import="newProject.a.Producto" %>
+<%@ page import="java.util.List" %>
+<%@ page import="org.springframework.jdbc.CannotGetJdbcConnectionException" %>
+<%@ page import="org.springframework.dao.DataAccessException" %>
+<%@ page import="newProject.dao.InterfazGenerics" %>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-   <!-- Bootstrap Styles -->
+<title>Productos</title>
+  <!-- Bootstrap Styles -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 <link rel="stylesheet" type="text/css" href="css/style.css">
-<script src="js/script.js" type="text/javascript"></script>
-<title>Insert title here</title>
 </head>
 <body>
-    <nav class="navbar navbar-dark navbar-fixed-top bg-dark" id="compania">
+<nav class="navbar navbar-dark navbar-fixed-top bg-dark" id="compania">
             
                 <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Company name</a>
                 <ul class="lista">
@@ -29,13 +38,13 @@
                           </a>
                         </li>
                         <li>
-                          <a class="nav-link" href="Productos.jsp">
+                          <a class="nav-link" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-shopping-cart"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg>
                             Productos
                           </a>
                         </li>
                         <li>
-                          <a class="nav-link" href="Clientes.jsp">
+                          <a class="nav-link" href="#">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                             Clientes
                           </a>
@@ -57,91 +66,43 @@
         <div class="container-fluid">
                 <div class="row">  
      <!-- Comienza el main ************************* -->
+     
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <div class="container principal">
-            <h5>Accesos rápidos</h5>
-            
-<!-- Tab links -->
-<div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'crear-factura')">Crear factura</button>
-  <button class="tablinks" onclick="openCity(event, 'proveedores')">Proveedores</button>
-  <button class="tablinks" onclick="openCity(event, 'clientes')">Clientes</button>
+        <div id="busqueda">
+        <form action="ClientesServletBusqueda" method="post">
+        <label>Buscar por Nombre</label><input type="text" value="nombre" name="nombre">
+        <label>Buscar por Id</label><input type="text" value="id" name="id">
+        <input type="submit" value="Buscar"><br>
+        </form>
+        </div>
+    <%
+    String nombre = request.getParameter("nombre");
+	String id = request.getParameter("id");
+	
+ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring_config.xml");
+InterfazGenerics proddao = (InterfazGenerics) applicationContext.getBean("prodDao");
+try {
+	List<Producto> prods = proddao.buscarTodos();
+	for (Producto prod : prods) { %>
+	<div class="card marg-top" style="width: 18rem;">
+  <img class="card-img-top height" src=<%= prod.getImg_tp() %> alt="Card image cap">
+  <div class="card-body">
+    <h5 class="card-title"><%= prod.getNombre() %></h5>
+    <p class="card-text"><%= prod.getStock() %><br><%= prod.getPrecio_c() %><br><%= prod.getPrecio_v() %><br><%= prod.getFua() %> </p>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
 </div>
+ <%
+		}
+	} catch (CannotGetJdbcConnectionException ex) {
+		ex.printStackTrace();
+	} catch (DataAccessException e) {
+		e.printStackTrace();
+	}
+((ClassPathXmlApplicationContext) applicationContext).close();
 
-<!-- Tab content -->
-<div id="crear-factura" class="tabcontent">
-  <h3>Creación factura</h3>
-  <p>London is the capital city of England.</p>
-</div>
+%>
 
-<div id="proveedores" class="tabcontent">
-  <h3>Proveedores</h3>
-  <form action="TomarDatosProveedores" method="get">
-  <label>Nombre: </label>
-  <input type="text" value="nombre" name="nombre"><br>
-  <label>Teléfono</label>
-  <input type="text" name="telefono" value="telefono"><br><br>
-  <input type="submit" value="Submit">
-</form> 
-</div>
-
-<div id="clientes" class="tabcontent">
-  <h3>Clientes</h3>
-  <form action="ClientesServlet" method="post">
-  <label>Id:</label>
-  <input type="text" name="id" value="id"><br>
-  <label>Nombre: </label>
-  <input type="text" value="nombre" name="nombre"><br>
-  <label>Teléfono:</label>
-  <input type="text" name="telefono" value="telefono"><br>
-  <label>Deuda:</label>
-  <input type="text" name="deuda" value="deuda"><br>
-  <input type="submit" value="Agregar cliente"><br>
-</form> 
-</div> 
-
-
-<div id="mostrar">
-<div class="contenido">
-<table id="tablec">
-  <caption>Monthly savings</caption>
-  <tr>
-    <th>Month</th>
-    <th>Savings</th>
-    <th>Month</th>
-    <th>Savings</th>
-    <th>Month</th>
-    <th>Savings</th>
-  </tr>
-  <tr>
-    <td>January</td>
-    <td>$100</td>
-    <td>January</td>
-    <td>$100</td>
-    <td>January</td>
-    <td>$100</td>
-  </tr>
-  <tr>
-    <td>February</td>
-    <td>$50</td>
-     <td>February</td>
-    <td>$50</td>
-     <td>February</td>
-    <td>$50</td>
-  </tr>
-   <tr>
-    <td>February</td>
-    <td>$50</td>
-     <td>February</td>
-    <td>$50</td>
-     <td>February</td>
-    <td>$50</td>
-  </tr>
-</table>
-
-</div>
-</div>
-            </div>
             </main> <!-- termina el main -->
     <nav class="col-md-2 d-none d-md-block bg-light sidebar">
           <div class="sidebar-sticky">
@@ -220,6 +181,5 @@
         </nav>
         </div>
         </div>
-
 </body>
 </html>
