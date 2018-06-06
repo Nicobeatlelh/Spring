@@ -18,6 +18,7 @@ import org.springframework.jdbc.CannotGetJdbcConnectionException;
 import newProject.a.App;
 import newProject.a.Cliente;
 import newProject.dao.AdminDao;
+import newProject.dao.InterfazGenerics;
 
 /**
  * Servlet implementation class ClientesServlet
@@ -52,15 +53,15 @@ public class ClientesServlet extends HttpServlet {
 		String tel = request.getParameter("telefono");
 		int deu = Integer.parseInt(request.getParameter("deuda"));
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring_config.xml");
-		AdminDao admindao = (AdminDao) applicationContext.getBean("adminDao");
+		InterfazGenerics clientdao = (InterfazGenerics) applicationContext.getBean("clientDao");
 		Cliente cli1 = new Cliente();
 		cli1.setNom_cli(nom);
 		cli1.setTel_cli(tel);
 		cli1.setDeuda_cli(deu);
 		try {
-			admindao.save(cli1);
+			clientdao.save(cli1);
 			System.out.println("Registro salvado exitosamente");
-			List<Cliente> admins = admindao.buscarTodos();
+			List<Cliente> admins = clientdao.buscarTodos();
 			for (Cliente admin2 : admins) {
 				System.out.println(admin2);
 			}

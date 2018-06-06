@@ -11,10 +11,10 @@
   	<servlet-class>newProject.servlet.ClientesServlet</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>ClientesServletView</servlet-name>
-  	<display-name>ClientesServletView</display-name>
+  	<servlet-name>ClientesServletBusqueda</servlet-name>
+  	<display-name>ClientesServletBusqueda</display-name>
   	<description></description>
-  	<servlet-class>newProject.servlet.ClientesServletView</servlet-class>
+  	<servlet-class>newProject.servlet.ClientesServletBusqueda</servlet-class>
   </servlet>
   <servlet>
   	<servlet-name>ProductosServlet</servlet-name>
@@ -27,8 +27,8 @@
   	<url-pattern>/ClientesServlet</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>ClientesServletView</servlet-name>
-  	<url-pattern>/ClientesServletView</url-pattern>
+  	<servlet-name>ClientesServletBusqueda</servlet-name>
+  	<url-pattern>/ClientesServletBusqueda</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>ProductosServlet</servlet-name>

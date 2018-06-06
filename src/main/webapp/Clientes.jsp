@@ -8,6 +8,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="org.springframework.jdbc.CannotGetJdbcConnectionException" %>
 <%@ page import="org.springframework.dao.DataAccessException" %>
+<%@ page import="newProject.dao.InterfazGenerics" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -90,10 +91,11 @@
 	String id = request.getParameter("id");
 	
 ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring_config.xml");
-AdminDao admindao = (AdminDao) applicationContext.getBean("adminDao");
-if(nombre==null){
+InterfazGenerics clientdao = (InterfazGenerics) applicationContext.getBean("clientDao");
+if((nombre!=null)||(id!=null)){
+if(nombre!=null){
 try {
-	List<Cliente> admins = admindao.buscarTodos();
+	List<Cliente> admins = clientdao.buscarXNombre(nombre);
 	for (Cliente admin2 : admins) { %>
       <tr>
         <td><%= admin2.getNom_cli() %></td>
@@ -101,15 +103,38 @@ try {
         <td><%= admin2.getDeuda_cli() %></td>
       </tr>
  <%
+		}
+	} catch (CannotGetJdbcConnectionException ex) {
+		ex.printStackTrace();
+	} catch (DataAccessException e) {
+		e.printStackTrace();
 	}
-} catch (CannotGetJdbcConnectionException ex) {
-	ex.printStackTrace();
-} catch (DataAccessException e) {
-	e.printStackTrace();
+	System.out.println("terminado if");
+	}
+else { 
+		if(id!=null){
+		System.out.println(id);
+		try {
+			
+		Cliente admin = (Cliente) clientdao.buscarXId(Integer.parseInt(id));
+		 %>
+	      <tr>
+	        <td><%= admin.getNom_cli() %></td>
+	        <td><%= admin.getTel_cli() %></td>
+	        <td><%= admin.getDeuda_cli() %></td>
+	      </tr>
+	 <%
+		
+	} catch (CannotGetJdbcConnectionException ex) {
+		ex.printStackTrace();
+	} catch (DataAccessException e) {
+		e.printStackTrace();
+	}
+}
 }
 }else{
 	try {
-		List<Cliente> admins = admindao.buscarXNombre(nombre);
+		List<Cliente> admins = clientdao.buscarTodos();
 		for (Cliente admin2 : admins) { %>
 	      <tr>
 	        <td><%= admin2.getNom_cli() %></td>
@@ -127,6 +152,7 @@ try {
 ((ClassPathXmlApplicationContext) applicationContext).close();
 
 %>
+
     </tbody>
   </table>
             </main> <!-- termina el main -->
