@@ -182,7 +182,7 @@
 					<th scope="col">Nombre Producto</th>
 					<th scope="col">Peso</th>
 					<th scope="col">Presentación</th>
-					<th scope="col">Cantidad</th>
+					<th scope="col">Stock</th>
 					<th scope="col">Precio-Unit</th>
 					<th scope="col">Cantidad</th>
 					<th scope="col">Precio-Total</th>

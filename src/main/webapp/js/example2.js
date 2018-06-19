@@ -13,6 +13,7 @@ function print_today() {
 
 $(document).ready(function(){
 	var palabra = "";
+	var palabra2 = "";
 	$('#date').html(print_today());
 	$( "#idCli" ).keypress(function( event ) {
 		if(event.keyCode!=13){
@@ -28,6 +29,7 @@ $(document).ready(function(){
 		if(event.keyCode!=13){
 			 palabra+=event.key;
 			 $('#nomProdForm').val(palabra);
+			 console.log(palabra);
 		}else{
 			$('#nomProdForm').val(palabra);
 			$('#enviarProd').trigger('click');	
@@ -36,10 +38,11 @@ $(document).ready(function(){
 	
 	$( "#pesoProd" ).keypress(function( event ) {
 		if(event.keyCode!=13){
-			 palabra+=event.key;
-			 $('#pesoProdForm').val(palabra);
+			 palabra2+=event.key;
+			 $('#pesoProdForm').val(palabra2);
+			 console.log(palabra2);
 		}else{
-			$('#pesoProdForm').val(palabra);
+			$('#pesoProdForm').val(palabra2);
 			$('#enviarProd').trigger('click');	
 		}
 	});
