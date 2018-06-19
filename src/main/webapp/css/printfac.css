@@ -1,0 +1,5 @@
+@charset "UTF-8";
+#hiderow,
+.delete {
+  display: none;
+}

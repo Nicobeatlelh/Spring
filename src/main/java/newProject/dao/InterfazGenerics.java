@@ -10,4 +10,5 @@ public interface InterfazGenerics<E> {
 	public E buscarXId(int id);
 	public List<E> buscarTodos();
 	public List<E> buscarXNombre(String n);
+	public E buscarXNombreYPeso(String n, String p);
 }

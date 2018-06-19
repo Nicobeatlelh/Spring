@@ -28,36 +28,20 @@ public class ProductoDaoImpl implements InterfazGenerics<Producto>{
 		// TODO Auto-generated method stub
 		BeanPropertySqlParameterSource paramMap = new BeanPropertySqlParameterSource(prod);
 		
-		return jdbcTemplate.update("insert into Producto (nombre,id_tp) values (:nombre,:id_tp)", paramMap) == 1;
+		return jdbcTemplate.update("insert into Producto (peso,prod_nom,stock,precio_c,precio_v) values (:peso,:prod_nom,:stock,:precio_c,:precio_v)", paramMap) == 1;
 	}
 
 
-	public List<Producto> buscarTodosSinJoin() {
+	public List<Producto> buscarTodos() {
 		return jdbcTemplate.query("Select * from Producto", new RowMapper<Producto>() {
 
 			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
 				Producto prod = new Producto();
-				prod.setId_prod(rs.getInt("id_prod"));
-				prod.setNombre(rs.getString("nombre"));
-				prod.setId_tp(rs.getInt("id_tp"));
-				return prod;
-			}
-		});
-	}
-	public List<Producto> buscarTodos() {
-		return jdbcTemplate.query("select p.nombre, t.stock,t.precio_c,t.precio_v,t.fua, t.img_tp " + 
-				"from Producto as p " + 
-				"inner join Tipo_prod as t " + 
-				"on t.id_tp=p.id_tp", new RowMapper<Producto>() {
-
-			public Producto mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Producto prod = new Producto();
-				prod.setNombre(rs.getString("nombre"));
+				prod.setPeso(rs.getString("peso"));
+				prod.setPrecio_c(rs.getFloat("precio_c"));
+				prod.setPrecio_v(rs.getFloat("precio_v"));
+				prod.setProd_nom(rs.getString("prod_nom"));
 				prod.setStock(rs.getInt("stock"));
-				prod.setPrecio_c(rs.getInt("precio_c"));
-				prod.setPrecio_v(rs.getInt("precio_v"));
-				prod.setFua(rs.getDate("fua"));
-				prod.setImg_tp(rs.getString("img_tp"));
 				return prod;
 			}
 		});
@@ -65,15 +49,16 @@ public class ProductoDaoImpl implements InterfazGenerics<Producto>{
 
 	public Producto buscarXId(int id) {
 		//return jdbcTemplate.query("Select * from prod where idad = :idAd", new MapSqlParameterSource("idAd",id),new prodRowMapper());
-		//return jdbcTemplate.queryForObject("Select * from Clientes where id_cli = :id_cli", new MapSqlParameterSource("id_cli",id),new ClienteRowMapper());
+		//return jdbcTemplate.queryForObject("Select * from Producto where id_cli = :id_cli", new MapSqlParameterSource("id_cli",id),new prodRowMapper());
 		return null;
 	}
 
 	public List<Producto> buscarXNombre(String nombre) {
 		// TODO Auto-generated method stub
-		//return jdbcTemplate.query("Select * from Clientes where nom_cli like :nom_cli",new MapSqlParameterSource("nom_cli", "%" + nombre + "%"), new ClienteRowMapper());
-		return null;
+		return jdbcTemplate.query("Select * from Producto where prod_nom = :prod_nom",new MapSqlParameterSource("prod_nom", "%" + nombre + "%"), new prodRowMapper());
+
 	}
+
 
 	public boolean actualizar(Producto prod) {
 		// BeanPropertySqlParameterSource, porque los campos de nuestra tabla son identicos al de nuestra clase
@@ -89,6 +74,11 @@ public class ProductoDaoImpl implements InterfazGenerics<Producto>{
 	public void grabarTodos(List<Producto> prods) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public Producto buscarXNombreYPeso(String nombre, String peso) {
+		// TODO Auto-generated method stub
+		return jdbcTemplate.queryForObject("select * from Producto where prod_nom = :prod_nom and peso = :peso",new MapSqlParameterSource("prod_nom", nombre).addValue("peso", peso), new prodRowMapper());
 	}
 
 	

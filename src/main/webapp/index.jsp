@@ -66,6 +66,7 @@
   <button class="tablinks" onclick="openCity(event, 'crear-factura')">Crear factura</button>
   <button class="tablinks" onclick="openCity(event, 'proveedores')">Proveedores</button>
   <button class="tablinks" onclick="openCity(event, 'clientes')">Clientes</button>
+  <button class="tablinks" onclick="openCity(event, 'Productos')">Productos</button>
 </div>
 
 <!-- Tab content -->
@@ -97,6 +98,22 @@
   <label>Deuda:</label>
   <input type="text" name="deuda" value="deuda"><br>
   <input type="submit" value="Agregar cliente"><br>
+</form> 
+</div>
+<div id="Productos" class="tabcontent">
+  <h3>Productos</h3>
+  <form action="ProductosServlet" method="get">
+  <label>Peso: </label>
+  <input type="text" name="peso"><br>
+  <label>Nombre: </label>
+  <input type="text" name="nombre" ><br>
+  <label>Stock: </label>
+  <input type="text" name="stock" ><br>
+  <label>Precio compra: </label>
+  <input type="text" name="precio_c" ><br>
+  <label>Precio venta: </label>
+  <input type="text" name="precio_v" ><br>
+  <input type="submit" value="Submit">
 </form> 
 </div> 
 

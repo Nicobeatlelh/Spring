@@ -74,6 +74,7 @@
         <form action="ClientesServletBusqueda" method="post">
         <label>Buscar por Nombre</label><input type="text" value="nombre" name="nombre">
         <label>Buscar por Id</label><input type="text" value="id" name="id">
+        <input type="hidden" value="noEsFactura" name="esFactura">
         <input type="submit" value="Buscar"><br>
         </form>
         </div>
@@ -89,11 +90,10 @@
     <%
     String nombre = request.getParameter("nombre");
 	String id = request.getParameter("id");
-	
+	System.out.println(nombre);
 ApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring_config.xml");
 InterfazGenerics clientdao = (InterfazGenerics) applicationContext.getBean("clientDao");
-if((nombre!=null)||(id!=null)){
-if(nombre!=null){
+if((nombre!=null)&&(nombre!="")){
 try {
 	List<Cliente> admins = clientdao.buscarXNombre(nombre);
 	for (Cliente admin2 : admins) { %>
@@ -110,9 +110,7 @@ try {
 		e.printStackTrace();
 	}
 	System.out.println("terminado if");
-	}
-else { 
-		if(id!=null){
+	}else if((id!=null)&&(id!="")){
 		System.out.println(id);
 		try {
 			
@@ -130,8 +128,6 @@ else {
 	} catch (DataAccessException e) {
 		e.printStackTrace();
 	}
-}
-}
 }else{
 	try {
 		List<Cliente> admins = clientdao.buscarTodos();

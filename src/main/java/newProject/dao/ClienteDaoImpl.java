@@ -47,13 +47,17 @@ public class ClienteDaoImpl implements InterfazGenerics<Cliente> {
 	}
 
 	public Cliente buscarXId(int id) {
-		//return jdbcTemplate.query("Select * from Admin where idad = :idAd", new MapSqlParameterSource("idAd",id),new AdminRowMapper());
+		//return (Cliente) jdbcTemplate.query("Select * from Clientes where id_cli= :id_cli", new MapSqlParameterSource("id_cli",id),new ClienteRowMapper());
 		return jdbcTemplate.queryForObject("Select * from Clientes where id_cli = :id_cli", new MapSqlParameterSource("id_cli",id),new ClienteRowMapper());
 	}
 
 	public List<Cliente> buscarXNombre(String nombre) {
 		// TODO Auto-generated method stub
 		return jdbcTemplate.query("Select * from Clientes where nom_cli like :nom_cli",new MapSqlParameterSource("nom_cli", "%" + nombre + "%"), new ClienteRowMapper());
+	}
+	public Cliente buscarXNombreYPeso(String nombre,String peso) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	public boolean actualizar(Cliente admin) {

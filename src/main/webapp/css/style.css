@@ -81,3 +81,14 @@ text-align: left;
 marg-top{
 	margin-top: 1.3em;
 }
+
+#formulario{
+	width: 0px;
+	height:0px;
+	overflow: hidden;
+}
+
+#idCli, #nomProd, #pesoProd{
+	width:10px;
+}
+
