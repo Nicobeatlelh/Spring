@@ -1,0 +1,22 @@
+
+.lista{
+margin-bottom: 0;
+text-align: left;
+}
+.lista li{
+    display: inline-block;
+}
+#compania{
+    margin: 0;
+    padding: 0;
+}
+.lista li a{
+    color: #fff;
+}
+
+.principal{
+    margin-top:50px;
+}
+.tabcontent{
+	width: 100%;
+}

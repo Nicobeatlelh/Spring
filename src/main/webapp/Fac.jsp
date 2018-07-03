@@ -190,13 +190,14 @@
 			</thead>
 			<tbody>
 				<tr class="item-row">
-					<th scope="row"><span id="nomProd" contentEditable="true">nom</span></th>
-					<td><span id="pesoProd" contentEditable="true">peso</span></td>
+					
 
 <%
 						if ((nombreProd != null) && (nombreProd != "") && (pesoProd != null) && (pesoProd != "")) {
 							try {
 								Producto prod = (Producto) proddao.buscarXNombreYPeso(nombreProd, pesoProd); %>
+								<th scope="row"><span id="nomProd" contentEditable="true"><%= prod.getProd_nom() %></span></th>
+					<td><span id="pesoProd" contentEditable="true"><%= prod.getPeso() %></span></td>
 					<td></td>
 					<td><%=prod.getStock()%></td>
 					<td><textarea class="cost"><%=prod.getPrecio_v()%> </textarea>
@@ -207,6 +208,15 @@
 								e.printStackTrace();
 							}
 							System.out.println("terminado if");
+						}else{
+							%>
+							<th scope="row"><span id="nomProd" contentEditable="true">nom</span></th>
+					<td><span id="pesoProd" contentEditable="true">peso</span></td>
+					<td></td>
+					<td></td>
+					<td><textarea class="cost"></textarea>
+					</td>
+							<%
 						}
 					%>
 

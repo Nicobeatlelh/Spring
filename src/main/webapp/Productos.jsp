@@ -87,7 +87,7 @@ try {
 	<div class="card marg-top" style="width: 18rem;">
   <img class="card-img-top height" src=<%= prod.getImg_tp() %> alt="Card image cap">
   <div class="card-body">
-    <h5 class="card-title"><%= prod.getNombre() %></h5>
+<%--     <h5 class="card-title"><%= prod.getNombre() %></h5> --%>
     <p class="card-text"><%= prod.getStock() %><br><%= prod.getPrecio_c() %><br><%= prod.getPrecio_v() %><br><%= prod.getFua() %> </p>
     <a href="#" class="btn btn-primary">Go somewhere</a>
   </div>
